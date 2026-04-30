@@ -1,0 +1,30 @@
+<div class="card task-card mb-3 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="{{ url_for('tasks.task_detail', task_id=task.id) }}" class="text-decoration-none">{{ task.title[:100] }}{% if task.title|length > 100 %}...{% endif %}</a>
+        </h5>
+        <div class="mb-2">
+            <span class="badge bg-secondary">{{ task.category.name if task.category else 'Без категории' }}</span>
+            <span class="difficulty-{{ task.difficulty }}">⭐ {{ task.difficulty }}</span>
+        </div>
+        <p class="text-muted small">
+            👤 <a href="{{ url_for('profile.view_profile', username=task.author.username) }}">{{ task.author.name }}</a> |
+            📅 {{ task.created_at.strftime('%d.%m.%Y') }} |
+            👁️ {{ task.views }} |
+            ✅ {{ task.solves_count }} |
+            ❤️ <span class="like-count">{{ task.likes_count }}</span> |
+            💬 {{ task.comments_count }}
+        </p>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('tasks.task_detail', task_id=task.id) }}" class="btn btn-sm btn-outline-primary">Решать</a>
+            {% if current_user.is_authenticated %}
+                <button class="btn btn-sm btn-outline-danger like-btn {% if task.is_liked_by(current_user) %}active{% endif %}" data-task-id="{{ task.id }}">
+                    <i class="bi bi-heart{% if task.is_liked_by(current_user) %}-fill{% endif %}"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-warning favorite-btn {% if task.is_favorited_by(current_user) %}active{% endif %}" data-task-id="{{ task.id }}">
+                    <i class="bi bi-star{% if task.is_favorited_by(current_user) %}-fill{% endif %}"></i>
+                </button>
+            {% endif %}
+        </div>
+    </div>
+</div>
