@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        {% include 'admin/_sidebar.html' %}
+    </div>
+    <div class="col-md-9">
+        <h1 class="mb-4">Админ-панель</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="stat-card primary">
+                    <h3>{{ total_users }}</h3>
+                    <p>Пользователей</p>
+                    <small>+{{ new_users_today }} сегодня</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card success">
+                    <h3>{{ total_tasks }}</h3>
+                    <p>Задач</p>
+                    <small>+{{ new_tasks_today }} сегодня</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card warning">
+                    <h3>{{ pending_tasks }}</h3>
+                    <p>На модерации</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Новые пользователи</div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            {% for user in recent_users %}
+                            <tr>
+                                <td>{{ user.name }}</td>
+                                <td>@{{ user.username }}</td>
+                                <td>{{ user.created_at.strftime('%d.%m.%Y') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Новые задачи</div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            {% for task in recent_tasks %}
+                            <tr>
+                                <td>{{ task.title[:30] }}...</td>
+                                <td>{{ task.author.name }}</td>
+                                <td>{{ task.status }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">Последние действия</div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    {% for log in recent_logs %}
+                    <tr>
+                        <td>{{ log.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+                        <td>{{ log.user.name }}</td>
+                        <td>{{ log.action_type }}</td>
+                        <td>{{ log.ip_address }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

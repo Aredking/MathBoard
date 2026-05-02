@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        {% include 'admin/_sidebar.html' %}
+    </div>
+    <div class="col-md-9">
+        <h2>Модерация задач</h2>
+        <form class="mb-3 row">
+            <div class="col">
+                <input type="text" name="q" class="form-control" placeholder="Поиск..." value="{{ search }}">
+            </div>
+            <div class="col">
+                <select name="status" class="form-select">
+                    <option value="">Все статусы</option>
+                    {% for val, label in statuses %}
+                        <option value="{{ val }}" {% if current_status == val %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary">Фильтр</button>
+            </div>
+        </form>
+        <table class="table table-striped">
+            <thead>
+                <tr><th>ID</th><th>Название</th><th>Автор</th><th>Статус</th><th>Действия</th></tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task.id }}</td>
+                    <td><a href="{{ url_for('tasks.task_detail', task_id=task.id) }}">{{ task.title[:50] }}...</a></td>
+                    <td>{{ task.author.name }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.moderate_task', task_id=task.id) }}" class="btn btn-sm btn-outline-warning">Модерация</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ pagination.links }}
+    </div>
+</div>
+{% endblock %}

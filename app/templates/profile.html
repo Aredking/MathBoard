@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body text-center">
+                <img src="{{ user.get_avatar_url() }}" alt="avatar" class="rounded-circle mb-3" width="120" height="120">
+                <h3>{{ user.name }}</h3>
+                <p class="text-muted">@{{ user.username }}</p>
+                {% if user.bio %}
+                    <p>{{ user.bio }}</p>
+                {% endif %}
+                {% if user.location %}
+                    <p><i class="bi bi-geo-alt"></i> {{ user.location }}</p>
+                {% endif %}
+                {% if user.website %}
+                    <p><i class="bi bi-link"></i> <a href="{{ user.website }}" target="_blank">{{ user.website }}</a></p>
+                {% endif %}
+                <p>Регистрация: {{ user.created_at.strftime('%d.%m.%Y') }}</p>
+                {% if user.id == current_user.id %}
+                    <a href="{{ url_for('profile.edit_profile') }}" class="btn btn-outline-primary">Редактировать профиль</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-header">Статистика</div>
+            <div class="card-body">
+                <p><i class="bi bi-file-text"></i> Создано задач: {{ stats.tasks_created }}</p>
+                <p><i class="bi bi-check-circle"></i> Решено задач: {{ stats.tasks_solved }}</p>
+                <p><i class="bi bi-heart"></i> Получено лайков: {{ stats.likes_received }}</p>
+                <p><i class="bi bi-star-fill"></i> Репутация: {{ stats.reputation }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h4>Задачи пользователя</h4>
+        {% if tasks %}
+            {% for task in tasks %}
+                {% include 'macros/task_card.html' %}
+            {% endfor %}
+            {{ pagination.links }}
+        {% else %}
+            <p>Пока нет опубликованных задач.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">📊 Статистика Math Board</h1>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card primary">
+            <h3>{{ total_users|default(0) }}</h3>
+            <p>Пользователей</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card success">
+            <h3>{{ total_tasks|default(0) }}</h3>
+            <p>Задач</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card warning">
+            <h3>{{ total_solves|default(0) }}</h3>
+            <p>Решений</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card danger">
+            <h3>{{ total_comments|default(0) }}</h3>
+            <p>Комментариев</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">🏆 Топ по репутации</div>
+            <div class="card-body">
+                {% if top_users %}
+                <ol class="list-group list-group-numbered">
+                    {% for user in top_users %}
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <a href="{{ url_for('profile.view_profile', username=user.username) }}">{{ user.name }}</a>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ user.reputation }}</span>
+                        </li>
+                    {% endfor %}
+                </ol>
+                {% else %}
+                <p class="text-muted">Пока нет данных о репутации пользователей.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">📈 Популярные категории</div>
+            <div class="card-body">
+                {% if popular_categories %}
+                <ul class="list-group">
+                    {% for cat_name, count in popular_categories %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ cat_name }}
+                            <span class="badge bg-secondary rounded-pill">{{ count }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">Категории пока не используются.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">✍️ Топ создателей задач</div>
+            <div class="card-body">
+                {% if top_creators %}
+                <ol class="list-group list-group-numbered">
+                    {% for user in top_creators %}
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            {{ user.name }}
+                            <span class="badge bg-success rounded-pill">{{ user.tasks_created }}</span>
+                        </li>
+                    {% endfor %}
+                </ol>
+                {% else %}
+                <p class="text-muted">Пока никто не создал ни одной задачи.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">✅ Топ решателей</div>
+            <div class="card-body">
+                {% if top_solvers %}
+                <ol class="list-group list-group-numbered">
+                    {% for user in top_solvers %}
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            {{ user.name }}
+                            <span class="badge bg-info rounded-pill">{{ user.tasks_solved }}</span>
+                        </li>
+                    {% endfor %}
+                </ol>
+                {% else %}
+                <p class="text-muted">Пока никто не решил ни одной задачи.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

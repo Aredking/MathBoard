@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        {% include 'admin/_sidebar.html' %}
+    </div>
+    <div class="col-md-9">
+        <h2>Модерация комментариев</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr><th>ID</th><th>Автор</th><th>Комментарий</th><th>Статус</th><th>Действия</th></tr>
+            </thead>
+            <tbody>
+                {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.id }}</td>
+                    <td>{{ comment.author.name }}</td>
+                    <td>{{ comment.content[:100] }}...</td>
+                    <td>{{ comment.status }}</td>
+                    <td>
+                        <button class="btn btn-sm toggle-comment" data-id="{{ comment.id }}">
+                            {{ 'Скрыть' if comment.status == 'active' else 'Показать' }}
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ pagination.links }}
+    </div>
+</div>
+<script>
+document.querySelectorAll('.toggle-comment').forEach(btn => {
+    btn.addEventListener('click', async function() {
+        const id = this.dataset.id;
+        const response = await fetch(`/admin/comments/${id}/toggle_status`, {method:'POST', headers:{'X-CSRFToken':getCsrfToken()}});
+        if (response.ok) location.reload();
+    });
+});
+</script>
+{% endblock %}

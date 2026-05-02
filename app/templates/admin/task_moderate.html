@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        {% include 'admin/_sidebar.html' %}
+    </div>
+    <div class="col-md-6">
+        <h2>Модерация задачи #{{ task.id }}</h2>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>{{ task.title }}</h5>
+                <p>Автор: {{ task.author.name }}</p>
+                <p>Текущий статус: {{ task.status }}</p>
+            </div>
+        </div>
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.status.label }} {{ form.status(class="form-select") }}
+            {{ form.reason.label }} {{ form.reason(class="form-control") }}
+            <button type="submit" class="btn btn-primary mt-3">Применить</button>
+            <a href="{{ url_for('admin.tasks_list') }}" class="btn btn-secondary mt-3">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
