@@ -1,0 +1,15 @@
+body { background-color: #f8f9fc; font-family: 'Segoe UI', sans-serif; }
+.task-card { transition: transform 0.2s, box-shadow 0.2s; }
+.task-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.difficulty-easy { color: #28a745; }
+.difficulty-medium { color: #ffc107; }
+.difficulty-hard { color: #dc3545; }
+.difficulty-expert { color: #6f42c1; }
+.like-btn.active { color: #dc3545; }
+.favorite-btn.active { color: #ffc107; }
+.stat-card { border-radius: 10px; padding: 1.5rem; color: white; margin-bottom: 1rem; }
+.stat-card.primary { background: linear-gradient(135deg, #4e73df, #224abe); }
+.stat-card.success { background: linear-gradient(135deg, #1cc88a, #13855c); }
+.stat-card.warning { background: linear-gradient(135deg, #f6c23e, #dda20a); }
+.stat-card.danger { background: linear-gradient(135deg, #e74a3b, #be2617); }
+.avatar { object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
