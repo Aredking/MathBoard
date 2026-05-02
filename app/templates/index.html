@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📋 Задачи</h1>
+    <a href="{{ url_for('tasks.create_task') }}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Добавить задачу</a>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card mb-4">
+            <div class="card-header">Фильтры</div>
+            <div class="card-body">
+                <form method="get">
+                    <div class="mb-3">
+                        <label class="form-label">Поиск</label>
+                        {{ form.q(class="form-control", placeholder="Поиск...") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Категория</label>
+                        {{ form.category(class="form-select") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Сложность</label>
+                        {{ form.difficulty(class="form-select") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Сортировка</label>
+                        {{ form.sort_by(class="form-select") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Применить</button>
+                    <a href="{{ url_for('tasks.index') }}" class="btn btn-outline-secondary w-100 mt-2">Сбросить</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        {% if tasks %}
+            {% for task in tasks %}
+                {% include 'macros/task_card.html' %}
+            {% endfor %}
+            {{ pagination.links }}
+        {% else %}
+            <div class="alert alert-info">Задач не найдено</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
